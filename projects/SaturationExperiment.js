@@ -19,7 +19,7 @@ function setup() {
     backgroundIntensity = 255;
     circleIntensity = 255;
 
-    circleDiameter = 40;
+    circleDiameter = 80;
     
     firstFrame = true;
     fixationEnabled = true;
@@ -34,11 +34,11 @@ function setup() {
     frameRate(20);
 
     // Slider to change the background intensity
-    bkgdSlider = createSlider(0, backgroundIntensity, 255);
+    bkgdSlider = createSlider(0, backgroundIntensity, 255, 5);
     bkgdSlider.position(20, 20);
 
     // Slider to change the circle intensity
-    circleSlider = createSlider(0, circleIntensity, 255);
+    circleSlider = createSlider(0, circleIntensity, 255, 5);
     circleSlider.position(20, 50);
 
     // Checkbox to toggle the fixation point
