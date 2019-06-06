@@ -3,17 +3,17 @@
 // Increment test light until just noticable against white
 //
 // 29May2019 - SSP
+// 5Jun2019 - SSP - Test stimulus increments are matched w/ bkgd decrements
+//                  Removed independent control of bkgd intensity
 
 var backgroundIntensity;
 var circleIntensity;
 var circleDiameter;
 
-var lastBackgroundIntensity;
 var lastCircleIntensity;
 var firstFrame
 
 // User interface
-var bkgdSlider;
 var circleSlider;
 var fixationCheckbox;
 var fixationEnabled;
@@ -39,18 +39,14 @@ function setup() {
     ellipseMode(RADIUS);
     frameRate(20);
 
-    // Slider to change the background intensity
-    bkgdSlider = createSlider(0, 255, backgroundIntensity, 5);
-    bkgdSlider.position(20, 20);
-
     // Slider to change the circle intensity
     circleSlider = createSlider(0, 255, circleIntensity, 1);
-    circleSlider.position(20, 50);
+    circleSlider.position(20, 20);
 
     // Checkbox to toggle the fixation point
     fill(255, 255, 255);
     fixCheckbox = createCheckbox(' ', fixationEnabled);
-    fixCheckbox.position(20, 90);
+    fixCheckbox.position(20, 60);
     fixCheckbox.changed(myCheckedEvent);
 }
 
@@ -61,15 +57,12 @@ function draw() {
         firstFrame = false;
     } else {
         // Update intensity to match slider value
-        lastBackgroundIntensity = backgroundIntensity;
-        backgroundIntensity = bkgdSlider.value();
         lastCircleIntensity = circleIntensity;
         circleIntensity = circleSlider.value();
 
         // Redraw the scene if intensity values changed
-        if (lastBackgroundIntensity != backgroundIntensity) {
-            drawScene();
-        } else if (lastCircleIntensity != circleIntensity) {
+        if (lastCircleIntensity != circleIntensity) {
+            backgroundIntensity = 255 - circleSlider.value();
             drawScene();
         }
     }
@@ -90,11 +83,11 @@ function drawScene() {
     if (verbose) {
         textSize(14);
         fill(255, 255, 255);
-        text("Circle", 10, 130);
-        text(circleIntensity, 150, 130);
-        text("Background", 10, 150);
-        text(backgroundIntensity, 150, 150);
-        text("Show Fixation", 50, 105);
+        text("Circle", 10, 100);
+        text(circleIntensity, 150, 100);
+        text("Background", 10, 120);
+        text(backgroundIntensity, 150, 120);
+        text("Show Fixation", 50, 75);
     }
 }
 
