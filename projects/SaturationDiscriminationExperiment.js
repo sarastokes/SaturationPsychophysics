@@ -23,7 +23,7 @@ var verbose;
 
 function setup() {
     backgroundIntensity = 255;
-    circleIntensity = 255;
+    circleIntensity = 0;
 
     circleDiameter = 80;
     
@@ -40,11 +40,11 @@ function setup() {
     frameRate(20);
 
     // Slider to change the background intensity
-    bkgdSlider = createSlider(0, backgroundIntensity, 255, 5);
+    bkgdSlider = createSlider(0, 255, backgroundIntensity, 5);
     bkgdSlider.position(20, 20);
 
     // Slider to change the circle intensity
-    circleSlider = createSlider(0, circleIntensity, 255, 1);
+    circleSlider = createSlider(0, 255, circleIntensity, 1);
     circleSlider.position(20, 50);
 
     // Checkbox to toggle the fixation point
