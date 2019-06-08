@@ -5,12 +5,12 @@
 // 29May2019 - SSP
 // 5Jun2019 - SSP - Test stimulus increments are matched w/ bkgd decrements
 //                  Removed independent control of bkgd intensity
+//                  Added callbacks for slider
 
 var backgroundIntensity;
 var circleIntensity;
 var circleDiameter;
 
-var lastCircleIntensity;
 var firstFrame
 
 // User interface
@@ -42,29 +42,19 @@ function setup() {
     // Slider to change the circle intensity
     circleSlider = createSlider(0, 255, circleIntensity, 1);
     circleSlider.position(20, 20);
+    circleSlider.input(onChangedCircleSlider);
 
     // Checkbox to toggle the fixation point
     fill(255, 255, 255);
     fixCheckbox = createCheckbox(' ', fixationEnabled);
     fixCheckbox.position(20, 60);
-    fixCheckbox.changed(myCheckedEvent);
+    fixCheckbox.changed(onCheckedFixationBox);
 }
 
 function draw() {    
     if (firstFrame == true) {
-        // Always draw the scene on the first frame
         drawScene();
         firstFrame = false;
-    } else {
-        // Update intensity to match slider value
-        lastCircleIntensity = circleIntensity;
-        circleIntensity = circleSlider.value();
-
-        // Redraw the scene if intensity values changed
-        if (lastCircleIntensity != circleIntensity) {
-            backgroundIntensity = 255 - circleSlider.value();
-            drawScene();
-        }
     }
 }
 
@@ -100,7 +90,13 @@ function addFixation() {
     }
 }
 
-function myCheckedEvent() {
+function onChangedCircleSlider() {
+    circleIntensity = circleSlider.value();
+    backgroundIntensity = 255 - circleIntensity;
+    drawScene();
+}
+
+function onCheckedFixationBox() {
     if (this.checked()) {
         fixationEnabled = true;
         drawScene();

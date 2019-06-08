@@ -1,10 +1,16 @@
+// SaturationExperiment.js
+//
+// Basic saturation experiment for evaluating calibrated
+// test lights against an equiluminant white background
+//
+// 28May2019 - SSP
+// 6Jun2019 - SSP - Added slider callbacks
+
+
+// Stimulus attributes
 var backgroundIntensity;
 var circleIntensity;
 var circleDiameter;
-
-var lastBackgroundIntensity;
-var lastCircleIntensity;
-var firstFrame
 
 // User interface
 var bkgdSlider;
@@ -12,7 +18,8 @@ var circleSlider;
 var fixationCheckbox;
 var fixationEnabled;
 
-// View intensity settings
+// Display settings
+var firstFrame
 var verbose;
 
 function setup() {
@@ -36,36 +43,25 @@ function setup() {
     // Slider to change the background intensity
     bkgdSlider = createSlider(0, 255, backgroundIntensity, 5);
     bkgdSlider.position(20, 20);
+    bkgdSlider.input(onSlideBackgroundIntensity);
 
     // Slider to change the circle intensity
     circleSlider = createSlider(0, 255, circleIntensity, 5);
     circleSlider.position(20, 50);
+    circleSlider.input(onSlideCircleIntensity);
 
     // Checkbox to toggle the fixation point
     fill(255, 255, 255);
     fixCheckbox = createCheckbox(' ', fixationEnabled);
     fixCheckbox.position(20, 90);
-    fixCheckbox.changed(myCheckedEvent);
+    fixCheckbox.changed(onCheckedFixationBox);
 }
 
 function draw() {    
     if (firstFrame == true) {
         // Always draw the scene on the first frame
         drawScene();
-        firstFrame = false;
-    } else {
-        // Update intensity to match slider value
-        lastBackgroundIntensity = backgroundIntensity;
-        backgroundIntensity = bkgdSlider.value();
-        lastCircleIntensity = circleIntensity;
-        circleIntensity = circleSlider.value();
-
-        // Redraw the scene if intensity values changed
-        if (lastBackgroundIntensity != backgroundIntensity) {
-            drawScene();
-        } else if (lastCircleIntensity != circleIntensity) {
-            drawScene();
-        }
+        firstFrame = false; 
     }
 }
 
@@ -101,7 +97,17 @@ function addFixation() {
     }
 }
 
-function myCheckedEvent() {
+function onSlideCircleIntensity() {
+    circleIntensity = circleSlider.value();
+    drawScene();
+}
+
+function onSlideBackgroundIntensity() {
+    circleIntensity = backgroundIntensity.value();
+    drawScene();
+}
+
+function onCheckedFixationBox() {
     if (this.checked()) {
         fixationEnabled = true;
         drawScene();
